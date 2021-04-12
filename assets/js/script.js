@@ -30,7 +30,7 @@ function updateLocalStorage(){
 
 function getDataForCity(cityName){
 
-    let requestUrl = "http://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid=0782912898e659b885fa952bd2602a61";
+    let requestUrl = "http://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid=0782912898e659b885fa952bd2602a61&units=metric";
     
     console.log(requestUrl)
     
@@ -80,12 +80,22 @@ function displayWeatherForCity(data){
     weatherDisplayElement.append(title);
 
     //Create Temperature
+    let temperature = $('<p class="lead">'+"Current Temperature: "+data["main"].temp+'°C'+'</p>')
 
+    weatherDisplayElement.append(temperature);    
+    
     //Create Humidity
+    let humidity = $('<p class="lead">'+"Humidity: "+data["main"].humidity+'%'+'</p>')
+
+    weatherDisplayElement.append(humidity); 
 
     //Create Wind Speed
+    let windSpeed = $('<p class="lead">'+"Wind Speed: "+data["wind"].speed+'KPH'+'</p>')
+
+    weatherDisplayElement.append(windSpeed); 
 
     //Create UV Index
+    displayUvData();
 
     //Add 5-Day Forecast
 
