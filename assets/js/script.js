@@ -57,9 +57,13 @@ function getDataForCity(cityName){
 
 
 function displayWeatherForCity(data){
-    let cityName =  data.name;
+    //Reset content
+    weatherDisplayElement.html('');
 
-    console.log(data);
+    //Get name of the city 
+    let cityName = data.name;
+
+    console.log(new Date(data.dt*1000+(data.timezone*1000)));
 
     //Update Search History Array and local storage if new search term
     if(!(weatherSearchHistory.includes(cityName))){
@@ -67,10 +71,13 @@ function displayWeatherForCity(data){
         populateSearchHistory();
         updateLocalStorage();  
     }
+    //Create Date to Title
+    let date = new Date(data.dt*1000+(data.timezone*1000)).toDateString();
 
     //Create Title
+    let title = $('<h1 class="display-5">'+cityName+', '+date+'</h1>');
 
-    //Add Date to Title
+    weatherDisplayElement.append(title);
 
     //Create Temperature
 
