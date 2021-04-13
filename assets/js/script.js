@@ -50,9 +50,46 @@ function getDataForCity(cityName){
         .then(function (data) {
             displayWeatherForCity(data);
         });
-    }
+}
 
-    
+function displayUvData(longitude, latitude){
+    let requestUrl = "http://api.openweathermap.org/data/2.5/uvi?lat="+latitude+"&lon="+longitude+"&appid=0782912898e659b885fa952bd2602a61";
+    fetch(requestUrl, {
+        // The browser fetches the resource from the remote server without first looking in the cache.
+        // The browser will then update the cache with the downloaded resource.
+        cache: 'reload',
+        })
+        .then(function (response) {
+            if(response.ok){
+                return response.json();  
+            }else{
+                console.error("Invalid Longitude and Latitude")
+            }
+            
+        })
+        .then(function (data) {
+            let uvIndex = Number(data.value);
+
+            let uvIndexElement = $('<p>'+"UV Index: "+uvIndex+'</p>')
+            
+            //Favourable: 0-2
+            //Moderate: 3-5
+            //Severe: >6
+            if(uvIndex<=2.0){
+                uvIndexElement.addClass("alert alert-success alert-custom")
+            }else if(uvIndex>2.0 && uvIndex<=5.0){
+                uvIndexElement.addClass("alert alert-warning alert-custom")
+            }else{
+                uvIndexElement.addClass("alert alert-danger alert-custom")
+            }
+
+            weatherDisplayElement.append(uvIndexElement);
+
+            console.log(uvIndex)
+            
+        });
+
+}
 
 
 
@@ -95,9 +132,10 @@ function displayWeatherForCity(data){
     weatherDisplayElement.append(windSpeed); 
 
     //Create UV Index
-    displayUvData();
+    displayUvData(data["coord"].lon, data["coord"].lat);
 
     //Add 5-Day Forecast
+    //displayForecast();
 
     
 }
@@ -114,6 +152,14 @@ function searchWeatherForCity(event){
 
 }
 
+function searchWeatherFromHistory(event){
+    //Get value from clicked element
+    let cardTitle = $(event.target).text()
+
+    getDataForCity(cardTitle);
+}
+
 searchButtonElement.on('click', searchWeatherForCity);
+searchListElement.on('click', 'span', searchWeatherFromHistory)
 
 

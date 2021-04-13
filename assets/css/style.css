@@ -25,3 +25,7 @@ a.card-title{
     font-size: large;
 }
 
+.alert-custom{
+    max-width: fit-content;
+}
+
