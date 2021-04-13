@@ -15,9 +15,10 @@
     min-height: 42px;
 }
 
-.card-body{
+#search-history-list > .card-body{
     width: 100%;
     margin: 5px 0px 5px;
+    min-width: 200px;
 }
 
 a.card-title{
@@ -28,4 +29,23 @@ a.card-title{
 .alert-custom{
     max-width: fit-content;
 }
+
+.forecast-card{
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.forecast-column{
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.forecast-card{
+    height: 100%;
+}
+
+/* #weather-forecast-section{
+
+} */
 

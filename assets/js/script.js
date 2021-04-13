@@ -12,6 +12,7 @@ $(document).ready( function(){
 
 var locationSearchInput = $('#location-input')
 var weatherDisplayElement = $('#weather-info-section')
+var weatherForecastDisplayElement = $('#weather-forecast-section')
 var searchButtonElement = $('.search-button')
 var searchListElement = $('#search-history-list')
 
@@ -31,9 +32,7 @@ function updateLocalStorage(){
 function getDataForCity(cityName){
 
     let requestUrl = "http://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid=0782912898e659b885fa952bd2602a61&units=metric";
-    
-    console.log(requestUrl)
-    
+        
     fetch(requestUrl, {
         // The browser fetches the resource from the remote server without first looking in the cache.
         // The browser will then update the cache with the downloaded resource.
@@ -91,6 +90,46 @@ function displayUvData(longitude, latitude){
 
 }
 
+function displayForecast(longitude, latitude){
+    let requestUrl = "http://api.openweathermap.org/data/2.5/onecall?lat="+latitude+"&lon="+longitude+"&exclude=hourly,current,alerts,minutely&appid=0782912898e659b885fa952bd2602a61&units=metric";
+
+    fetch(requestUrl, {
+        // The browser fetches the resource from the remote server without first looking in the cache.
+        // The browser will then update the cache with the downloaded resource.
+        cache: 'reload',
+        })
+        .then(function (response) {
+            if(response.ok){
+                return response.json();  
+            }else{
+                console.error("Invalid Longitude and Latitude")
+            }
+            
+        })
+        .then(function (data) {
+            let forecastArray = data.daily;
+
+            console.log(forecastArray)
+
+            for (let index = 0; index < 5; index++) {
+                const element = forecastArray[index];
+                
+                //Get date from unix code
+                let date = new Date(element.dt * 1000).toDateString();
+
+                //Get icon from source
+                console.log(element.weather[0].icon)
+
+                //Create container
+                let forecastCard =$('<div class="col-sm forecast-column"><div class="card forecast-card"><div class="card-body"><p class="card-title" style="padding:10px 0px;"><strong>'+date+'</strong></p><img src="http://openweathermap.org/img/w/'+ element.weather[0].icon +'.png"><p class="card-text"><small>Temperature: '+element.temp.day+'°C'+'</small></p><p class="card-text"><small>Humidity: '+element.humidity+'%'+'</small></p></div></div></div>');
+            
+                //Append card to the forecast row
+                weatherForecastDisplayElement.append(forecastCard);
+            }
+                       
+        });
+}
+
 
 
 function displayWeatherForCity(data){
@@ -99,8 +138,6 @@ function displayWeatherForCity(data){
 
     //Get name of the city 
     let cityName = data.name;
-
-    console.log(new Date(data.dt*1000+(data.timezone*1000)));
 
     //Update Search History Array and local storage if new search term
     if(!(weatherSearchHistory.includes(cityName))){
@@ -135,7 +172,7 @@ function displayWeatherForCity(data){
     displayUvData(data["coord"].lon, data["coord"].lat);
 
     //Add 5-Day Forecast
-    //displayForecast();
+    displayForecast(data["coord"].lon, data["coord"].lat);
 
     
 }
