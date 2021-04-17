@@ -52,7 +52,7 @@ function getDataForCity(cityName){
 }
 
 function displayUvData(longitude, latitude){
-    let requestUrl = "http://api.openweathermap.org/data/2.5/uvi?lat="+latitude+"&lon="+longitude+"&appid=0782912898e659b885fa952bd2602a61";
+    let requestUrl = "https://api.openweathermap.org/data/2.5/uvi?lat="+latitude+"&lon="+longitude+"&appid=0782912898e659b885fa952bd2602a61";
     fetch(requestUrl, {
         // The browser fetches the resource from the remote server without first looking in the cache.
         // The browser will then update the cache with the downloaded resource.
@@ -91,7 +91,7 @@ function displayUvData(longitude, latitude){
 }
 
 function displayForecast(longitude, latitude){
-    let requestUrl = "http://api.openweathermap.org/data/2.5/onecall?lat="+latitude+"&lon="+longitude+"&exclude=hourly,current,alerts,minutely&appid=0782912898e659b885fa952bd2602a61&units=metric";
+    let requestUrl = "https://api.openweathermap.org/data/2.5/onecall?lat="+latitude+"&lon="+longitude+"&exclude=hourly,current,alerts,minutely&appid=0782912898e659b885fa952bd2602a61&units=metric";
 
     fetch(requestUrl, {
         // The browser fetches the resource from the remote server without first looking in the cache.
@@ -183,6 +183,7 @@ function searchWeatherForCity(event){
     //Get value from search 
     let searchValue = locationSearchInput.val()
 
+    //Checks if the search value is empty before proceeding to search
     if(!(searchValue.length===0)){
         getDataForCity(searchValue);
     }
@@ -196,7 +197,11 @@ function searchWeatherFromHistory(event){
     getDataForCity(cardTitle);
 }
 
+
+//Event binding for interactive elements 
+//Event for search button
 searchButtonElement.on('click', searchWeatherForCity);
+//Event for cards in the history
 searchListElement.on('click', 'span', searchWeatherFromHistory)
 
 
