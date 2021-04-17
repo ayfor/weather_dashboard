@@ -31,7 +31,7 @@ function updateLocalStorage(){
 
 function getDataForCity(cityName){
 
-    let requestUrl = "http://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid=0782912898e659b885fa952bd2602a61&units=metric";
+    let requestUrl = "https://api.openweathermap.org/data/2.5/weather?q="+cityName+"&appid=0782912898e659b885fa952bd2602a61&units=metric";
         
     fetch(requestUrl, {
         // The browser fetches the resource from the remote server without first looking in the cache.
@@ -135,6 +135,7 @@ function displayForecast(longitude, latitude){
 function displayWeatherForCity(data){
     //Reset content
     weatherDisplayElement.html('');
+    weatherForecastDisplayElement.html('');
 
     //Get name of the city 
     let cityName = data.name;
